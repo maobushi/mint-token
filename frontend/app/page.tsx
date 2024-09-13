@@ -1,5 +1,9 @@
-import Image from "next/image";
+import TokenMinter from "@/components/Body/TokenMinter";
 
 export default function Home() {
-  return <>hi</>;
+	return (
+		<>
+			<TokenMinter />
+		</>
+	);
 }
