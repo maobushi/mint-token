@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  nextjs:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+      - /app/.pnpm-store
+    environment:
+      - NODE_ENV=development
+    command: pnpm dev
+
+volumes:
+  node_modules:
+  next:
+  pnpm-store:
