@@ -16,6 +16,7 @@ type Token = {
 	name: string;
 	symbol: string;
 	totalSupply: string;
+	balance: string; // 追加：ユーザーの残高
 };
 
 export default function TokenViewer() {
@@ -30,7 +31,7 @@ export default function TokenViewer() {
 	}, []);
 
 	const handleViewTokens = async () => {
-		if (contractAddress && walletProvider) {
+		if (contractAddress && walletProvider && address) {
 			try {
 				console.log("トークン情報取得開始:", contractAddress);
 				const ethersProvider = new BrowserProvider(walletProvider);
@@ -41,6 +42,7 @@ export default function TokenViewer() {
 					"function name() view returns (string)",
 					"function symbol() view returns (string)",
 					"function totalSupply() view returns (uint256)",
+					"function balanceOf(address) view returns (uint256)", // 追加：balanceOf関数
 				];
 
 				const contract = new ethers.Contract(contractAddress, erc20ABI, signer);
@@ -48,11 +50,13 @@ export default function TokenViewer() {
 				const name = await contract.name();
 				const symbol = await contract.symbol();
 				const totalSupply = await contract.totalSupply();
+				const balance = await contract.balanceOf(address); // 追加：ユーザーの残高を取得
 
 				const newToken: Token = {
 					name,
 					symbol,
 					totalSupply: ethers.formatEther(totalSupply),
+					balance: ethers.formatEther(balance), // 追加：残高をEtherに変換
 				};
 
 				setTokens([newToken]);
@@ -68,7 +72,7 @@ export default function TokenViewer() {
 				}
 			}
 		} else {
-			alert("コントラクトアドレスを入力してください。");
+			alert("コントラクトアドレスを入力し、ウォレットに接続してください。");
 		}
 	};
 
@@ -131,6 +135,8 @@ export default function TokenViewer() {
 									<span>名前: {token.name}</span>
 									<span>シンボル: {token.symbol}</span>
 									<span>総供給量: {token.totalSupply}</span>
+									<span>保有量: {token.balance}</span>{" "}
+									{/* 追加：保有量の表示 */}
 								</li>
 							))}
 						</ul>
