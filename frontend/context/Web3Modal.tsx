@@ -14,6 +14,14 @@ const mainnet = {
 	rpcUrl: "https://cloudflare-eth.com",
 };
 
+const baseChain = {
+	chainId: 84532,
+	name: "Base Sepolia",
+	currency: "ETH",
+	explorerUrl: "https://sepolia-explorer.base.org",
+	rpcUrl: "	https://sepolia.base.org",
+};
+
 // 3. Create a metadata object
 const metadata = {
 	name: "token-mint",
@@ -37,8 +45,16 @@ const ethersConfig = defaultConfig({
 
 // 5. Create a Web3Modal instance
 createWeb3Modal({
-	ethersConfig,
-	chains: [mainnet],
+	ethersConfig: defaultConfig({
+		metadata,
+		auth: {
+			email: false,
+			socials: [],
+			showWallets: true,
+			walletFeatures: true,
+		},
+	}),
+	chains: [mainnet, baseChain],
 	projectId,
 	enableAnalytics: true, // Optional - defaults to your Cloud configuration
 	enableOnramp: true, // Optional - false as default

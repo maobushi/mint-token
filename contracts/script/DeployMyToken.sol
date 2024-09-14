@@ -9,7 +9,7 @@ contract DeployMyToken is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        MyToken token = new MyToken("My Token", "MTK", 1000000);
+        MyToken token = new MyToken("BushiToken", "BST", 1000000);
         console.log("Token deployed at:", address(token));
 
         vm.stopBroadcast();
